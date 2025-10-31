@@ -47,3 +47,33 @@ body {
     border-radius: 10px;
     font-size: 28px;
 }
+.opacity05 {
+    opacity: 0.5;
+}
+.displayBlock {
+    display: block;
+}
+.displayNone {
+    display: none;
+}
+.positionAbsolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.transparent {
+    background-color: transparent;
+}
+.monospace {
+    font-family: monospace;
+}
+.maxwidth100 {
+    max-width: 100%;
+}
+
+.right {
+    color: green;
+}
+.wrong {
+    color: red;
+}

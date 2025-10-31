@@ -34,6 +34,34 @@ btn.addEventListener("click", () => {
                 break;
             default : break;
         }
+        text.forEach(span=>{
+            let spanTag = `<span>${span}</span>`;
+            P.innerHTML += spanTag;
+        })
+        P.classList.add("monospace");
+        content.appendChild(P);
+        let span = document.querySelectorAll("span");
         
+        let index = 0;
+        let count = 0;
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key.length == 1) {
+                if(e.key === span[index].innerText)
+                    span[index].classList.add("right");
+                else
+                    span[index].classList.add("wrong");
+
+                index++;
+                count++;  
+            }
+            if (e.key === "Backspace") {
+                span[index-1].classList.remove("right");
+                span[index-1].classList.remove("wrong");
+                if(index != 0)
+                    index--;
+                count++;
+            }
+        });
     }
 });
