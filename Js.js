@@ -19,7 +19,7 @@ btn.addEventListener("click", () => {
                     "Snow began to fall slowly, covering the ground in a clean white blanket. The air was cold but still, and every sound felt softer than usual. A few people walked quickly, leaving clear footprints behind them. Inside the houses, windows glowed with light and warmth. The smell of soup and baked cookies filled the air.",
                     "The sea was calm, with small waves touching the sand and fading quietly. Seagulls circled above, calling out as they searched for food. A group of children built a sandcastle near the water, their laughter carried by the wind. Far away, a boat moved slowly toward the horizon. The salty air filled every breath."
                 ];
-                text = package[Math.floor(Math.random()*package.length)].split('');
+                text = package[Math.floor(Math.random() * package.length)].split('');
                 break;
             case "hard":
                 package = [
@@ -29,74 +29,133 @@ btn.addEventListener("click", () => {
                     "The forest was alive with sound, from the chirping of insects to the whisper of leaves swaying high above. Sunlight filtered through the branches, scattering golden shapes across the mossy ground. A narrow stream trickled between the roots of old trees, its surface trembling with the breeze. A deer appeared at the edge of a clearing, still and graceful, listening to the soft music of the woods. The air was cool and sweet, filled with the scent of pine and wildflowers. Every step deeper into the forest felt like entering another world, ancient and endlessly calm.",
                     "The evening air shimmered with the last warmth of the setting sun. Waves rolled gently onto the sand, their edges glowing like liquid gold. A woman walked along the shore, leaving a trail of footprints that vanished with each wave. The distant sound of laughter came from a group near a bonfire, mixing with the soft crash of the sea. Above, the first stars began to appear, faint but steady. The night was slow to arrive, unfolding quietly across the sky, carrying with it the calm promise of rest and reflection."
                 ];
-                text = package[Math.floor(Math.random()*package.length)].split('');
+                text = package[Math.floor(Math.random() * package.length)].split('');
                 break;
-            default : break;
+            default: break;
         }
-        text.forEach(span=>{
+
+        text.forEach(span => {
             let spanTag = `<span>${span}</span>`;
             P.innerHTML += spanTag;
-        })
+        });
         P.classList.add("monospace");
         content.appendChild(P);
+
         let span = document.querySelectorAll("span");
         let index = 0;
         let totalctyped = 0;
         let typedcorrect = 0;
-        function handlekeydown(e){
+
+        function handlekeydown(e) {
             if (e.key.length == 1) {
-                if(e.key === span[index].innerText){
+                if (e.key === span[index].innerText) {
                     span[index].classList.add("right");
                     totalctyped++;
                     typedcorrect++;
-                }
-                else{
+                } else {
                     span[index].classList.add("wrong");
                     totalctyped++;
                 }
                 index++;
             }
-            if (e.key === "Backspace") {
-                span[index-1].classList.remove("right");
-                span[index-1].classList.remove("wrong");
-                if(index != 0)
-                    index--;
+            if (e.key === "Backspace" && index > 0) {
+                span[index - 1].classList.remove("right");
+                span[index - 1].classList.remove("wrong");
+                index--;
             }
         }
+
         window.addEventListener("keydown", handlekeydown);
+
         let timer = document.createElement("div");
         let mydiv = document.createElement("div");
         mydiv.classList.add("timing");
         document.body.prepend(mydiv);
+
         let time = 0;
-        timer.innerText = `letf time : ${time}s`;
+        timer.innerText = `time : ${time}s`;
         let interval;
         timer.classList.add("transparentbg");
         mydiv.append(timer);
-        function start() {
-            score.innerText = "score :counting...";
-            accuracy.innerText ="accuracy rate :counting...";
-            interval = setInterval(() =>{
-                time++;
-                timer.innerText = `time : ${time}s`;
-                if(span.length == index){
-                    clearInterval(interval);
-                    window.removeEventListener("keydown", handlekeydown);
-                    score.innerText = "score : "+Math.floor(((text.length/5)*60)/time)+" wpm";
-                    accuracy.innerText = `accuracy rate : ${Math.floor((typedcorrect/totalctyped)*100)}%`;
-                }
-            },600)
-            window.removeEventListener("keydown", start);  
-        }
-        window.addEventListener("keydown", start);
 
         let score = document.createElement("div");
         score.innerText = "score";
         score.classList.add("transparentbg");
         mydiv.append(score);
+
         let accuracy = document.createElement("div");
-        accuracy.innerText ="accuracy rate";
+        accuracy.innerText = "accuracy rate";
         accuracy.classList.add("transparentbg");
         mydiv.append(accuracy);
+
+        let bestscore = localStorage.getItem("bestScore") || 0;
+
+        function start() {
+            score.innerText = "score : counting...";
+            accuracy.innerText = "accuracy rate : counting...";
+            interval = setInterval(() => {
+                time++;
+                timer.innerText = `time : ${time}s`;
+                if (span.length == index) {
+                    clearInterval(interval);
+                    window.removeEventListener("keydown", handlekeydown);
+
+                    let currentScore = Math.floor(((text.length / 5) * 60) / time);
+                    score.innerText = "score : " + currentScore + " wpm";
+                    accuracy.innerText = `accuracy rate : ${Math.floor((typedcorrect / totalctyped) * 100)}%`;
+
+                    if (currentScore > bestscore) {
+                        bestscore = currentScore;
+                        localStorage.setItem("bestScore", bestscore);
+                    }
+
+                    let finalmsg = document.createElement("div");
+                    finalmsg.classList.add("popup");
+                    document.body.append(finalmsg);
+
+                    let bestscorediv = document.createElement("div");
+                    bestscorediv.innerText = `the best score so far is : ${bestscore}`;
+                    finalmsg.append(bestscorediv);
+
+                    let playagainbtn = document.createElement("div");
+                    playagainbtn.innerText = "Try Again";
+                    playagainbtn.classList.add("button");
+
+                    let buttonsdiv = document.createElement("div");
+                    buttonsdiv.classList.add("buttonsdiv");
+                    buttonsdiv.append(playagainbtn);
+
+                    let startoverbtn = document.createElement("div");
+                    startoverbtn.innerText = "Start Over";
+                    startoverbtn.classList.add("button");
+                    buttonsdiv.append(startoverbtn);
+
+                    finalmsg.append(buttonsdiv);
+
+                    playagainbtn.addEventListener("click", () => {
+                        finalmsg.remove();
+                        index = 0;
+                        totalctyped = 0;
+                        typedcorrect = 0;
+                        time = 0;
+                        timer.innerText = `time : 0s`;
+                        score.innerText = "score";
+                        accuracy.innerText = "accuracy rate";
+
+                        span.forEach(c => c.classList.remove("right", "wrong"));
+
+                        window.addEventListener("keydown", handlekeydown);
+                        window.addEventListener("keydown", start);
+                    });
+
+                    startoverbtn.addEventListener("click", () => {
+                        location.reload();
+                    });
+                }
+            }, 600);
+            window.removeEventListener("keydown", start);
+        }
+
+        window.addEventListener("keydown", start);
     }
 });
