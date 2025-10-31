@@ -12,14 +12,13 @@ btn.addEventListener("click", () => {
         switch (choice.value) {
             case "easy":
                 package = [
-                    "The morning was calm and bright. Birds were singing, and the wind moved gently through the trees. A small cat sat on the window watching people walk by. Everyone seemed happy and full of energy. Children ran down the street, laughing and playing together. The smell of fresh bread came from the bakery nearby, making the whole town feel warm and alive.",
-                    "The sun was setting behind the hills, painting the sky in soft shades of orange and pink. A cool breeze carried the scent of flowers across the fields. People were walking slowly, enjoying the quiet evening. A dog barked in the distance, breaking the calm for a moment. Lights began to appear in the houses, glowing warmly through the windows. The world felt peaceful, as if time had decided to rest for a while.",
-                    "Rain started to fall gently on the rooftops, creating a soft rhythm that filled the air. The streets glistened under the streetlights, reflecting small pools of gold. A man hurried by with an umbrella, his footsteps echoing on the wet pavement. Inside a nearby café, friends laughed over steaming cups of coffee. The air smelled of fresh rain and roasted beans, blending into a comforting mix that made the city feel alive.",
-                    "The park was full of life that morning. Joggers passed by with music in their ears, and children chased pigeons near the fountain. An old man sat on a bench reading his newspaper, his glasses sliding down his nose. The sound of laughter mixed with the rustle of leaves in the trees. Everything seemed to move in harmony, as if the day itself was smiling at everyone.",
-                    "Snow began to fall slowly, covering the ground in a clean white blanket. The air was cold but still, and every sound felt softer than usual. A few people walked quickly, leaving clear footprints behind them. Inside the houses, windows glowed with light and warmth. The smell of soup and baked cookies filled the air, reminding everyone that winter could be gentle too.",
-                    "The sea was calm, with small waves touching the sand and fading quietly. Seagulls circled above, calling out as they searched for food. A group of children built a sandcastle near the water, their laughter carried by the wind. Far away, a boat moved slowly toward the horizon. The salty air filled every breath, bringing a feeling of peace and endless freedom."
+                    "The morning was calm and bright. Birds were singing, and the wind moved gently through the trees. A small cat sat on the window watching people walk by. Everyone seemed happy and full of energy. Children ran down the street, laughing and playing together. The smell of fresh bread came from the bakery nearby.",
+                    "The sun was setting behind the hills, painting the sky in soft shades of orange and pink. A cool breeze carried the scent of flowers across the fields. People were walking slowly, enjoying the quiet evening. A dog barked in the distance, breaking the calm for a moment. Lights began to appear in the houses, glowing warmly through the windows.",
+                    "Rain started to fall gently on the rooftops, creating a soft rhythm that filled the air. The streets glistened under the streetlights, reflecting small pools of gold. A man hurried by with an umbrella, his footsteps echoing on the wet pavement. Inside a nearby café, friends laughed over steaming cups of coffee. The air smelled of fresh rain and roasted beans.",
+                    "The park was full of life that morning. Joggers passed by with music in their ears, and children chased pigeons near the fountain. An old man sat on a bench reading his newspaper, his glasses sliding down his nose. The sound of laughter mixed with the rustle of leaves in the trees. Everything seemed to move in harmony.",
+                    "Snow began to fall slowly, covering the ground in a clean white blanket. The air was cold but still, and every sound felt softer than usual. A few people walked quickly, leaving clear footprints behind them. Inside the houses, windows glowed with light and warmth. The smell of soup and baked cookies filled the air.",
+                    "The sea was calm, with small waves touching the sand and fading quietly. Seagulls circled above, calling out as they searched for food. A group of children built a sandcastle near the water, their laughter carried by the wind. Far away, a boat moved slowly toward the horizon. The salty air filled every breath."
                 ];
-                console.log(Math.floor(Math.random()*7))
                 text = package[Math.floor(Math.random()*package.length)].split('');
                 break;
             case "hard":
@@ -42,22 +41,26 @@ btn.addEventListener("click", () => {
         content.appendChild(P);
         let span = document.querySelectorAll("span");
         let index = 0;
-        let count = 0;
+        let totalctyped = 0;
+        let typedcorrect = 0;
         function handlekeydown(e){
             if (e.key.length == 1) {
-                if(e.key === span[index].innerText)
+                if(e.key === span[index].innerText){
                     span[index].classList.add("right");
-                else
+                    totalctyped++;
+                    typedcorrect++;
+                }
+                else{
                     span[index].classList.add("wrong");
+                    totalctyped++;
+                }
                 index++;
-                count++;  
             }
             if (e.key === "Backspace") {
                 span[index-1].classList.remove("right");
                 span[index-1].classList.remove("wrong");
                 if(index != 0)
                     index--;
-                count++;
             }
         }
         window.addEventListener("keydown", handlekeydown);
@@ -68,15 +71,19 @@ btn.addEventListener("click", () => {
         let time = 0;
         timer.innerText = `letf time : ${time}s`;
         let interval;
+        timer.classList.add("transparentbg");
         mydiv.append(timer);
         function start() {
+            score.innerText = "score :counting...";
+            accuracy.innerText ="accuracy rate :counting...";
             interval = setInterval(() =>{
                 time++;
                 timer.innerText = `time : ${time}s`;
-                if(span.length <= index){
+                if(span.length == index){
                     clearInterval(interval);
                     window.removeEventListener("keydown", handlekeydown);
-                    score.innerText = "score : "+Math.floor(((text.length/5)*60)/time)+" WPM";
+                    score.innerText = "score : "+Math.floor(((text.length/5)*60)/time)+" wpm";
+                    accuracy.innerText = `accuracy rate : ${Math.floor((typedcorrect/totalctyped)*100)}%`;
                 }
             },600)
             window.removeEventListener("keydown", start);  
@@ -84,7 +91,12 @@ btn.addEventListener("click", () => {
         window.addEventListener("keydown", start);
 
         let score = document.createElement("div");
-        score.innerText = "score :counting...   ";
+        score.innerText = "score";
+        score.classList.add("transparentbg");
         mydiv.append(score);
+        let accuracy = document.createElement("div");
+        accuracy.innerText ="accuracy rate";
+        accuracy.classList.add("transparentbg");
+        mydiv.append(accuracy);
     }
 });
