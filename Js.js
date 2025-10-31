@@ -41,17 +41,14 @@ btn.addEventListener("click", () => {
         P.classList.add("monospace");
         content.appendChild(P);
         let span = document.querySelectorAll("span");
-        
         let index = 0;
         let count = 0;
-
-        window.addEventListener("keydown", (e) => {
+        function handlekeydown(e){
             if (e.key.length == 1) {
                 if(e.key === span[index].innerText)
                     span[index].classList.add("right");
                 else
                     span[index].classList.add("wrong");
-
                 index++;
                 count++;  
             }
@@ -62,6 +59,29 @@ btn.addEventListener("click", () => {
                     index--;
                 count++;
             }
-        });
+        }
+        window.addEventListener("keydown", handlekeydown);
+        let timer = document.createElement("span");
+        let mydiv = document.createElement("div");
+        mydiv.classList.add("timing");
+        document.body.prepend(mydiv);
+        let lefttime = 60;
+        timer.innerText = `letf time : ${lefttime}s`;
+        let interval;
+        mydiv.append(timer);
+        function start() {
+            interval = setInterval(() =>{
+                lefttime--;
+                timer.innerText = `letf time : ${lefttime}s`;
+                if(lefttime == 0){
+                    timer.innerText = `TIME IS UP`;
+                    clearInterval(interval);
+                    window.removeEventListener("keydown", handlekeydown);
+                }
+            },600)
+            window.removeEventListener("keydown", start);  
+        }
+        window.addEventListener("keydown", start);
+
     }
 });
