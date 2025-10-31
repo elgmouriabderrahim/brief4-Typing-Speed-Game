@@ -83,7 +83,6 @@ body {
 }
 .timing {
     display: flex;
-    justify-content: center;
-    gap: 50px;
+    justify-content: space-between;
     width: 90%;
 }

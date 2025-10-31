@@ -61,27 +61,30 @@ btn.addEventListener("click", () => {
             }
         }
         window.addEventListener("keydown", handlekeydown);
-        let timer = document.createElement("span");
+        let timer = document.createElement("div");
         let mydiv = document.createElement("div");
         mydiv.classList.add("timing");
         document.body.prepend(mydiv);
-        let lefttime = 60;
-        timer.innerText = `letf time : ${lefttime}s`;
+        let time = 0;
+        timer.innerText = `letf time : ${time}s`;
         let interval;
         mydiv.append(timer);
         function start() {
             interval = setInterval(() =>{
-                lefttime--;
-                timer.innerText = `letf time : ${lefttime}s`;
-                if(lefttime == 0){
-                    timer.innerText = `TIME IS UP`;
+                time++;
+                timer.innerText = `time : ${time}s`;
+                if(span.length <= index){
                     clearInterval(interval);
                     window.removeEventListener("keydown", handlekeydown);
+                    score.innerText = "score : "+Math.floor(((text.length/5)*60)/time)+" WPM";
                 }
             },600)
             window.removeEventListener("keydown", start);  
         }
         window.addEventListener("keydown", start);
 
+        let score = document.createElement("div");
+        score.innerText = "score :counting...   ";
+        mydiv.append(score);
     }
 });
