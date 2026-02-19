@@ -1,17 +1,10 @@
-
----
-
-## Typing Speed Game**
-
-```markdown
 # Typing Speed Game – Play the DOM!
 
 ## Description
 Typing Speed Game is an interactive web mini-game to improve typing speed and accuracy while practicing DOM manipulation. Users must type the displayed text as quickly and correctly as possible.
 
-This project was part of the **DOM Gamification: Play the DOM!** assignment for the YouCode platform.
 
-**Technologies used:** HTML5, CSS3, JavaScript, Flexbox, Responsive Design, JSON.
+**Technologies used:** HTML5, CSS3, JavaScript, Flexbox, Responsive Design.
 
 ---
 
@@ -26,7 +19,7 @@ This project was part of the **DOM Gamification: Play the DOM!** assignment for 
 
 ### Bonus Features
 - Multiple difficulty levels: simple vs. complex sentences.
-- Random phrase.
+- Random phrase generation.
 - Leaderboard for best local scores.
 
 ---
@@ -36,7 +29,6 @@ This project was part of the **DOM Gamification: Play the DOM!** assignment for 
 1. Clone the repository:
    ```bash
    git clone https://github.com/elgmouriabderrahim/brief4-Typing-Speed-Game.git
-
 
 
 ## Screenshots
